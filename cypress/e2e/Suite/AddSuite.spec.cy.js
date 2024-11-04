@@ -1,12 +1,14 @@
 import loginPage from "../../support/PageObject/login.page";
 import SuitePage from "../../support/PageObject/suite.page";
 import generateRandomString from "../../support/Helpers/stringRandomHelpers";
+import dashboardPage from "../../support/PageObject/dashboard.page";
 
 
 describe('AddSuite spec', () => {
 
     beforeEach(() => {
             loginPage.login(Cypress.env("email"), Cypress.env("password"))
+            dashboardPage.AccessToDesignPage()
     })
 
     it('Add suite successfully', () => {

@@ -1,9 +1,5 @@
 class SuitePage{
 
-    get testDesignButton() {
-        return cy.get('.css-19i0a4t')
-    }
-
     get addSuiteButton() {
         return cy.get('[data-testid="addSuiteButton"]')
     }
@@ -24,8 +20,9 @@ class SuitePage{
         return cy.get('.css-snrx14').last()
     }
 
+    
+
     addSuite(name) {
-        this.testDesignButton.click()
         this.addSuiteButton.click()
         this.suiteNameInput.clear().type(name)
         this.addSuiteConfirmButton.click()
