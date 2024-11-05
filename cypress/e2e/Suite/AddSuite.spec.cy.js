@@ -11,16 +11,21 @@ describe("AddSuite spec", () => {
 
   it("Add suite successfully", () => {
     const randomStringName = generateRandomString(10);
-    SuitePage.addSuite(randomStringName);
-    cy.wait(6000);
+    
+    /* SuitePage.addSuite(randomStringName) */
+    SuitePage.evaluetAssert("suite1")
+      
+    cy.get('@foundElement').should("have.text", "suite1")
 
-    SuitePage.lastSuite.should("have.text", randomStringName);
+    
+  /* cy.log(SuitePage.evaluetAssert(randomStringName)) */
+    /* expect(SuitePage.evaluetAssert(randomStringName)).to.equal(randomStringName) */
 
-    /* SuitePage.suitesArr.each((elem) =>{
-            if (elem.text() === randomStringName) {
-            expect(elem.text()).to.equal(randomStringName)
-            }
-        }) */
+    
+    
+    /* SuitePage.lastSuite.should("have.text", randomStringName); */
+    
+
   });
 
   it.skip("Add Nested-suite successfully", () => {

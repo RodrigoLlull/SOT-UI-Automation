@@ -1,4 +1,5 @@
 class SuitePage {
+
   get addSuiteButton() {
     return cy.get('[data-testid="addSuiteButton"]');
   }
@@ -26,6 +27,19 @@ class SuitePage {
     this.addSuiteButton.click();
     this.suiteNameInput.clear().type(name);
     this.addSuiteConfirmButton.click();
+  }
+
+   evaluetAssert(name) {
+    let element = ''
+
+     this.suitesArr.each((elem) =>{
+      if (elem.text() === name) {
+       element = elem
+       cy.log(element)
+      }
+    }).then (() => {
+      cy.wrap(element).as('foundElement')
+    })
   }
 
   addNestedSuite(name) {
