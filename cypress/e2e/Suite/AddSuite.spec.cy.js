@@ -7,28 +7,19 @@ describe("AddSuite spec", () => {
   beforeEach(() => {
     loginPage.login(Cypress.env("email"), Cypress.env("password"));
     dashboardPage.AccessToDesignPage();
+    cy.wait(6000)
   });
 
   it("Add suite successfully", () => {
     const randomStringName = generateRandomString(10);
-    
-    /* SuitePage.addSuite(randomStringName) */
-    SuitePage.evaluetAssert("suite1")
-      
-    cy.get('@foundElement').should("have.text", "suite1")
-
-    
-  /* cy.log(SuitePage.evaluetAssert(randomStringName)) */
-    /* expect(SuitePage.evaluetAssert(randomStringName)).to.equal(randomStringName) */
-
-    
-    
-    /* SuitePage.lastSuite.should("have.text", randomStringName); */
-    
-
+    SuitePage.addSuite(randomStringName);
+    cy.scrollTo('bottom');
+    cy.wait(5000)
+    SuitePage.findSuite(randomStringName);
+    cy.get('@foundSuite').should("have.text", randomStringName);
   });
 
-  it.skip("Add Nested-suite successfully", () => {
+  /*it.skip("Add Nested-suite successfully", () => {
     const randomStringName = generateRandomString(10);
     cy.wait(6000);
     SuitePage.addNestedSuite(randomStringName);
@@ -36,10 +27,10 @@ describe("AddSuite spec", () => {
 
     SuitePage.lastSuite.should("have.text", randomStringName);
 
-    /* SuitePage.suitesArr.each((elem) =>{
+     SuitePage.suitesArr.each((elem) =>{
             if (elem.text() === randomStringName) {
             expect(elem.text()).to.equal(randomStringName)
             }
-        }) */
-  });
+        }) 
+  });*/
 });
