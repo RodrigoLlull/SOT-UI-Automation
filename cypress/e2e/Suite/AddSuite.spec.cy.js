@@ -1,22 +1,27 @@
-import loginPage from "../../support/PageObject/login.page";
+import LoginPage from "../../support/PageObject/login.page";
 import SuitePage from "../../support/PageObject/suite.page";
 import generateRandomString from "../../support/Helpers/stringRandomHelpers";
-import dashboardPage from "../../support/PageObject/dashboard.page";
+import DashboardPage from "../../support/PageObject/dashboard.page";
 
 describe("AddSuite spec", () => {
+  const randomSuiteName = generateRandomString(4);
+
   beforeEach(() => {
-    loginPage.login(Cypress.env("email"), Cypress.env("password"));
-    dashboardPage.AccessToDesignPage();
-    cy.wait(6000)
+    LoginPage.login(Cypress.env("email"), Cypress.env("password"));
+    DashboardPage.AccessToDesignPage();
+  });
+
+  afterEach(()=> {
+    SuitePage.findSuiteButtonByName(randomSuiteName)
+    SuitePage.deleteSuite()
   });
 
   it("Add suite successfully", () => {
-    const randomStringName = generateRandomString(10);
-    SuitePage.addSuite(randomStringName);
+    SuitePage.addSuite(randomSuiteName);
     cy.scrollTo('bottom');
-    cy.wait(5000)
-    SuitePage.findSuite(randomStringName);
-    cy.get('@foundSuite').should("have.text", randomStringName);
+    cy.wait(4000)
+    SuitePage.findSuite(randomSuiteName);
+    cy.get('@foundSuite').should("have.text", randomSuiteName);
   });
 
   /*it.skip("Add Nested-suite successfully", () => {

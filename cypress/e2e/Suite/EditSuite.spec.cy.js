@@ -1,11 +1,28 @@
-import dashboardPage from "../../support/PageObject/dashboard.page";
-import loginPage from "../../support/PageObject/login.page";
+import DashboardPage from "../../support/PageObject/dashboard.page";
+import LoginPage from "../../support/PageObject/login.page";
+import SuitePage from "../../support/PageObject/suite.page";
+import generateRandomString from "../../support/Helpers/stringRandomHelpers";
 
-describe("AddSuite spec", () => {
+describe("EditSuite spec", () => {
+  const RandomSuitename = generateRandomString(4);
+  const RandomSuitenameToEdit = generateRandomString(4);
+
   beforeEach(() => {
-    loginPage.login(Cypress.env("email"), Cypress.env("password"));
-    dashboardPage.AccessToDesignPage();
+    LoginPage.login(Cypress.env("email"), Cypress.env("password"));
+    DashboardPage.AccessToDesignPage();
+    SuitePage.addSuite(RandomSuitename);
   });
 
-  it("Deberia haber un caso de prueba", () => {});
+  afterEach(()=> {
+    SuitePage.findSuiteButtonByName(RandomSuitenameToEdit)
+    SuitePage.deleteSuite()
+  });
+
+  it("Deberia haber un caso de prueba", () => {
+    SuitePage.findSuiteButtonByName(RandomSuitename)
+    SuitePage.editSuite(RandomSuitenameToEdit)
+    cy.wait(4000)
+    SuitePage.findSuite(RandomSuitenameToEdit);
+    cy.get('@foundSuite').should("have.text", RandomSuitenameToEdit);
+  });
 });

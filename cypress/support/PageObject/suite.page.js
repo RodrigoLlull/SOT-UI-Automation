@@ -1,6 +1,6 @@
-import getSuitesIds from "../../support/Helpers/getSuitesIdsHelpers";
-class SuitePage {
+import getSuites from "../../support/Helpers/getSuitesIdsHelpers";
 
+class SuitePage {
   get addSuiteButton() {
     return cy.get('[data-testid="addSuiteButton"]');
   }
@@ -9,12 +9,8 @@ class SuitePage {
     return cy.get('[data-testid="nameInput"]');
   }
 
-  get addSuiteConfirmButton() {
+  get SuiteConfirmButton() {
     return cy.get('[data-testid="confirmButton"]');
-  }
-
-  get addNestedSuiteButton() {
-    return cy.get('[data-testid="addNestedSuiteButton1730783026310"]');
   }
 
   get suitesArr() {
@@ -26,51 +22,89 @@ class SuitePage {
   }
 
   get suiteNameToConfirmDelete() {
-    return cy.get(".css-o3d33y strong")
+    return cy.get(".css-o3d33y strong");
   }
 
-  findDeleteSuiteButton(suiteIdTarget) {
-    getSuitesIds();
-    cy.get('@suiteIds').then((suiteIds) =>{
-      suiteIds.forEach((suiteId) => {
-        if (suiteIdTarget === suiteId) {
-          cy.get(`button[data-testid="deleteSuiteButton${suiteId}"]`).as('foundDeleteSuiteButton')
-        }
-      })
-    })
+  get suiteEditInput() {
+    return cy.get(".css-1x5jdmq");
   }
 
-  deleteSuite(){
-    cy.get('@foundDeleteSuiteButton').click()
-    this.suiteNameToConfirmDelete.then(($strong) =>{
-      const strongContent = $strong.text()
-      this.suiteNameInput.clear().type(strongContent)
-      this.addSuiteConfirmButton.click()
-    })
+  findSuiteButtonByName(suiteNameTarget) {
+    getSuites();
+    cy.get("@suites").then((suites) => {
+      const targetSuite = suites.find(
+        (suite) => suite.suiteName === suiteNameTarget
+      );
+
+      if (targetSuite) {
+        const { suiteId } = targetSuite;
+        cy.get(`button[data-testid="deleteSuiteButton${suiteId}"]`).as(
+          "foundDeleteSuiteButton"
+        );
+        cy.get(`button[data-testid="editSuiteButton${suiteId}"]`).as(
+          "foundEditSuiteButton"
+        );
+      } else {
+        throw new Error(`Suite with name "${suiteNameTarget}" not found`);
+      }
+    });
   }
-  
+
+  findNestedSuiteButtonByName(suiteNameTarget) {
+    getSuites();
+    cy.get("@suites").then((suites) => {
+      const targetSuite = suites.find(
+        (suite) => suite.suiteName === suiteNameTarget
+      );
+      if (targetSuite) {
+        const { suiteId } = targetSuite;
+        cy.get(`button[data-testid="addNestedSuiteButton${suiteId}"]`).as(
+          "foundNestedSuiteButton"
+        );
+      } else {
+        throw new Error(`Suite with name "${suiteNameTarget}" not found`);
+      }
+    });
+  }
+
   addSuite(name) {
     this.addSuiteButton.click();
     this.suiteNameInput.clear().type(name);
-    this.addSuiteConfirmButton.click();
+    this.SuiteConfirmButton.click();
+  }
+
+  deleteSuite() {
+    cy.get("@foundDeleteSuiteButton").click();
+    this.suiteNameToConfirmDelete.then(($strong) => {
+      const strongContent = $strong.text();
+      this.suiteNameInput.clear().type(strongContent);
+      this.SuiteConfirmButton.click();
+    });
+  }
+
+  editSuite(nameForEdit) {
+    cy.get("@foundEditSuiteButton").click();
+    this.suiteEditInput.clear().type(nameForEdit);
+    this.SuiteConfirmButton.click();
   }
 
   findSuite(name) {
-    let foundSuite = ''
-
-    this.suitesArr.each((elem) =>{
-      if (elem.text() === name) {
-        foundSuite = elem
-      }
-    }).then (() => {
-      cy.wrap(foundSuite).as('foundSuite')
-    })
+    let foundSuite = "";
+    this.suitesArr
+      .each((elem) => {
+        if (elem.text() === name) {
+          foundSuite = elem;
+        }
+      })
+      .then(() => {
+        cy.wrap(foundSuite).as("foundSuite");
+      });
   }
 
   addNestedSuite(name) {
-    this.addNestedSuiteButton.click();
+    cy.get("@foundNestedSuiteButton").click();
     this.suiteNameInput.clear().type(name);
-    this.addSuiteConfirmButton.click();
+    this.SuiteConfirmButton.click();
   }
 }
 

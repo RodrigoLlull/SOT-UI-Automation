@@ -9,7 +9,7 @@ describe('Dashboard spec', () => {
 
     it('Acces to Test-Design', () => {
         dashboardPage.AccessToDesignPage();
-        cy.wait(8000)
+        cy.wait(4000)
         cy.url().should("eq", "https://d2yqnm7qbjnp0v.cloudfront.net/test-design?id=PROJECT1726858662783&name=GROUP+06")        
     })
 
