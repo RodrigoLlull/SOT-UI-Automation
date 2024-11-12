@@ -4,7 +4,7 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: "https://d2yqnm7qbjnp0v.cloudfront.net",
     env: {
-      Authorization: "",
+      projectId: "",
       email: "",
       password: "",
     }

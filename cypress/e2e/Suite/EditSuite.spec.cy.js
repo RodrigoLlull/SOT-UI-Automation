@@ -5,7 +5,7 @@ import generateRandomString from "../../support/Helpers/stringRandomHelpers";
 
 describe("EditSuite spec", () => {
   const RandomSuitename = generateRandomString(4);
-  const RandomSuitenameToEdit = generateRandomString(4);
+  let RandomSuitenameToEdit = generateRandomString(4);
 
   beforeEach(() => {
     LoginPage.login(Cypress.env("email"), Cypress.env("password"));
@@ -20,6 +20,15 @@ describe("EditSuite spec", () => {
 
   it("Deberia haber un caso de prueba", () => {
     SuitePage.findSuiteButtonByName(RandomSuitename)
+    SuitePage.editSuite(RandomSuitenameToEdit)
+    cy.wait(4000)
+    SuitePage.findSuite(RandomSuitenameToEdit);
+    cy.get('@foundSuite').should("have.text", RandomSuitenameToEdit);
+  });
+
+  it.skip("Deberia haber un caso de prueba", () => {
+    SuitePage.findSuiteButtonByName(RandomSuitename)
+    RandomSuitenameToEdit="    ";
     SuitePage.editSuite(RandomSuitenameToEdit)
     cy.wait(4000)
     SuitePage.findSuite(RandomSuitenameToEdit);

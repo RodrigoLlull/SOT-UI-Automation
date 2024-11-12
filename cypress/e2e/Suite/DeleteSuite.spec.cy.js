@@ -6,7 +6,6 @@ import generateRandomString from "../../support/Helpers/stringRandomHelpers";
 describe("Delete spec", () => {
   const randomSuiteName = generateRandomString(4);
 
-
   beforeEach(() => {
     LoginPage.login(Cypress.env("email"), Cypress.env("password"));
     DashboardPage.AccessToDesignPage();

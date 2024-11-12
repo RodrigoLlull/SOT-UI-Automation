@@ -9,7 +9,7 @@ export default function getProject(){
             }
         }).then((response) => {
             const project = response.body.projects.map(({ projectId }) => ({ projectId }));
-            cy.wrap(project).as('project');
+            Cypress.env("projectId:", project);
         })
     })
 }
