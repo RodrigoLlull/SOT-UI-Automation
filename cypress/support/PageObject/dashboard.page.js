@@ -8,11 +8,9 @@ class DashboardPage {
     }
 
     AccessToDesignPage(){
-        cy.wait(5000)
         this.TestDesignButton.click()
     }
     AccessToRunPage(){
-        cy.wait(5000)
         this.TestDesignButton.click()
     }
 }

@@ -4,7 +4,8 @@ import loginPage from "../../support/PageObject/login.page"
 describe('Dashboard spec', () => {
 
     beforeEach(() => {
-        loginPage.login(Cypress.env("email"), Cypress.env("password"))
+        cy.loginByApi(randomSuiteName)
+        cy.visit("/dashboard")
     })
 
     it('Acces to Test-Design', () => {

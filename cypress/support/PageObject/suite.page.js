@@ -29,8 +29,30 @@ class SuitePage {
     return cy.get(".css-1x5jdmq");
   }
 
-  findSuiteButtonByName(suiteNameTarget) {
+
+  // Esto seria la funcion findSuiteButtonByName() dividida en dos 
+  /* findSuiteButtonByName(suiteNameTarget) {
     getSuites();
+    cy.get("@suites").then((suites) => {
+      
+      const targetSuite = suites.find(
+        (suite) => suite.suiteName === suiteNameTarget
+      )
+      // esta es la parte que no logre solucionar
+      if (targetSuite) {
+        const { suiteId } = targetSuite
+        return suiteId
+      }});
+      
+  }
+
+  clickOnDeleteButtonBySuiteName(suiteName) {
+    const suiteObject = this.findSuiteButtonByName(suiteName)
+    return cy.get(`button[data-testid="deleteSuiteButton${suiteObject}"]`).click()
+  } */
+
+  findSuiteButtonByName(suiteNameTarget) {
+    cy.getSuites();
     cy.get("@suites").then((suites) => {
       const targetSuite = suites.find(
         (suite) => suite.suiteName === suiteNameTarget
@@ -51,7 +73,7 @@ class SuitePage {
   }
 
   findNestedSuiteButtonByName(suiteNameTarget) {
-    getSuites();
+    cy.getSuites();
     cy.get("@suites").then((suites) => {
       const targetSuite = suites.find(
         (suite) => suite.suiteName === suiteNameTarget
@@ -74,6 +96,9 @@ class SuitePage {
   }
 
   deleteSuite() {
+    /* Asi llamariamos a la funcion y la linea cy.get("@foundDeleteSuiteButton").click(); pasaria a estar comentada
+    Ademas al usar esta forma deleteSuite() pasaria a recibir un parametro deleteSuite(suiteName)
+    this.clickOnDeleteButtonBySuiteName(suiteName) */
     cy.get("@foundDeleteSuiteButton").click();
     this.suiteNameToConfirmDelete.then(($strong) => {
       const strongContent = $strong.text();

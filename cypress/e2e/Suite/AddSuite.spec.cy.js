@@ -1,4 +1,3 @@
-import LoginPage from "../../support/PageObject/login.page";
 import SuitePage from "../../support/PageObject/suite.page";
 import generateRandomString from "../../support/Helpers/stringRandomHelpers";
 import DashboardPage from "../../support/PageObject/dashboard.page";
@@ -7,7 +6,8 @@ describe("AddSuite spec", () => {
   const randomSuiteName = generateRandomString(4);
 
   beforeEach(() => {
-    LoginPage.login(Cypress.env("email"), Cypress.env("password"));
+    cy.loginByApi(randomSuiteName)
+    cy.visit("/dashboard")
     DashboardPage.AccessToDesignPage();
   });
 
@@ -18,8 +18,8 @@ describe("AddSuite spec", () => {
 
   it("Add suite successfully", () => {
     SuitePage.addSuite(randomSuiteName);
-    cy.scrollTo('bottom');
     cy.wait(4000)
+    cy.scrollTo('bottom');
     SuitePage.findSuite(randomSuiteName);
     cy.get('@foundSuite').should("have.text", randomSuiteName);
   });

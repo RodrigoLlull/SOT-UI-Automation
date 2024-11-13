@@ -1,37 +1,37 @@
 import DashboardPage from "../../support/PageObject/dashboard.page";
-import LoginPage from "../../support/PageObject/login.page";
 import SuitePage from "../../support/PageObject/suite.page";
 import generateRandomString from "../../support/Helpers/stringRandomHelpers";
 
 describe("EditSuite spec", () => {
-  const RandomSuitename = generateRandomString(4);
-  let RandomSuitenameToEdit = generateRandomString(4);
+  const randomSuiteName = generateRandomString(4);
+  let randomSuiteNameToEdit = generateRandomString(4);
 
   beforeEach(() => {
-    LoginPage.login(Cypress.env("email"), Cypress.env("password"));
+    cy.loginByApi(randomSuiteName)
+    cy.visit("/dashboard")
     DashboardPage.AccessToDesignPage();
-    SuitePage.addSuite(RandomSuitename);
+    SuitePage.addSuite(randomSuiteName);
   });
 
   afterEach(()=> {
-    SuitePage.findSuiteButtonByName(RandomSuitenameToEdit)
+    SuitePage.findSuiteButtonByName(randomSuiteNameToEdit)
     SuitePage.deleteSuite()
   });
 
   it("Deberia haber un caso de prueba", () => {
-    SuitePage.findSuiteButtonByName(RandomSuitename)
-    SuitePage.editSuite(RandomSuitenameToEdit)
+    SuitePage.findSuiteButtonByName(randomSuiteName)
+    SuitePage.editSuite(randomSuiteNameToEdit)
     cy.wait(4000)
-    SuitePage.findSuite(RandomSuitenameToEdit);
-    cy.get('@foundSuite').should("have.text", RandomSuitenameToEdit);
+    SuitePage.findSuite(randomSuiteNameToEdit);
+    cy.get('@foundSuite').should("have.text", randomSuiteNameToEdit);
   });
 
   it.skip("Deberia haber un caso de prueba", () => {
-    SuitePage.findSuiteButtonByName(RandomSuitename)
-    RandomSuitenameToEdit="    ";
-    SuitePage.editSuite(RandomSuitenameToEdit)
+    SuitePage.findSuiteButtonByName(randomSuiteName)
+    randomSuiteNameToEdit="    ";
+    SuitePage.editSuite(randomSuiteNameToEdit)
     cy.wait(4000)
-    SuitePage.findSuite(RandomSuitenameToEdit);
-    cy.get('@foundSuite').should("have.text", RandomSuitenameToEdit);
+    SuitePage.findSuite(randomSuiteNameToEdit);
+    cy.get('@foundSuite').should("have.text", randomSuiteNameToEdit);
   });
 });

@@ -7,6 +7,7 @@ module.exports = defineConfig({
       projectId: "",
       email: "",
       password: "",
-    }
+    },
+    defaultCommandTimeout: 15000
   },
 });
