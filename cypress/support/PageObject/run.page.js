@@ -1,3 +1,7 @@
-class RunTestPage {}
+class RunTestPage {
+
+    
+
+}
 
 export default new RunTestPage();

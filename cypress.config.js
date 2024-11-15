@@ -4,9 +4,8 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: "https://d2yqnm7qbjnp0v.cloudfront.net",
     env: {
-      projectId: "",
-      email: "",
-      password: "",
+      email: "fabiogadea21@gmail.com",
+      password: "Qwerty01!",
     },
     defaultCommandTimeout: 15000
   },

@@ -7,30 +7,22 @@ describe("EditSuite spec", () => {
   let randomSuiteNameToEdit = generateRandomString(4);
 
   beforeEach(() => {
-    cy.loginByApi(randomSuiteName)
-    cy.visit("/dashboard")
+    cy.loginByApi(randomSuiteName);
+    cy.visit("/dashboard");
     DashboardPage.AccessToDesignPage();
     SuitePage.addSuite(randomSuiteName);
   });
 
-  afterEach(()=> {
-    SuitePage.findSuiteButtonByName(randomSuiteNameToEdit)
-    SuitePage.deleteSuite()
+  afterEach(() => {
+    SuitePage.deleteSuite(randomSuiteNameToEdit);
   });
 
-  it("Deberia haber un caso de prueba", () => {
-    SuitePage.findSuiteButtonByName(randomSuiteName)
-    SuitePage.editSuite(randomSuiteNameToEdit)
-    cy.wait(4000)
-    SuitePage.findSuite(randomSuiteNameToEdit);
-    cy.get('@foundSuite').should("have.text", randomSuiteNameToEdit);
-  });
-
-  it.skip("Deberia haber un caso de prueba", () => {
-    SuitePage.findSuiteButtonByName(randomSuiteName)
-    randomSuiteNameToEdit="    ";
-    SuitePage.editSuite(randomSuiteNameToEdit)
-    cy.wait(4000)
+  it("Edit suite successfuly", () => {
+    cy.wait(3000);
+    cy.scrollTo("bottom");
+    SuitePage.editSuite(randomSuiteName, randomSuiteNameToEdit)
+    cy.wait(3000);//Si no hago un wait aqui, nuestro find suite, no encuentra el elemento, porque el programa demora en responder que actualizo la lista.
+    cy.scrollTo("bottom");
     SuitePage.findSuite(randomSuiteNameToEdit);
     cy.get('@foundSuite').should("have.text", randomSuiteNameToEdit);
   });

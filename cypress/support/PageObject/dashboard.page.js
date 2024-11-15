@@ -4,14 +4,14 @@ class DashboardPage {
         return cy.get(".css-19i0a4t")
     }
     get TestRunButton(){
-        return cy.get(".ccss-1czjoxd")
+        return cy.get(".css-1czjoxd")
     }
 
     AccessToDesignPage(){
         this.TestDesignButton.click()
     }
     AccessToRunPage(){
-        this.TestDesignButton.click()
+        this.TestRunButton.click()
     }
 }
 export default new DashboardPage()

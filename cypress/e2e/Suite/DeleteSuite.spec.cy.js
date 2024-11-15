@@ -13,11 +13,9 @@ describe("Delete spec", () => {
   });
 
   it("Delete suit successfully ", () =>{
+    cy.wait(4000)
     cy.scrollTo('bottom');
-    cy.wait(4000)
-    SuitePage.findSuiteButtonByName(randomSuiteName)
-    SuitePage.deleteSuite()
-    cy.wait(4000)
-    cy.get('@foundDeleteSuiteButton').should('not.exist');
+    SuitePage.deleteSuite(randomSuiteName)
+    cy.get('@deleteSuiteButton').should('not.exist');
   })
 });

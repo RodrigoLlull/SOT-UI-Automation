@@ -5,5 +5,5 @@ export default function generateRandomString(length) {
         const randomIndex = Math.floor(Math.random() * characters.length);
         result += characters[randomIndex];
     }
-    return 'Suite_'+result;
+    return 'Test_'+result;
 }

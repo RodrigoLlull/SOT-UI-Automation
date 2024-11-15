@@ -1,5 +1,3 @@
-import getSuites from "../../support/Helpers/getSuitesIdsHelpers";
-
 class SuitePage {
   get addSuiteButton() {
     return cy.get('[data-testid="addSuiteButton"]');
@@ -26,11 +24,10 @@ class SuitePage {
   }
 
   get suiteEditInput() {
-    return cy.get(".css-1x5jdmq");
+    return cy.get('[data-testid="editInput"]');
   }
 
-
-  // Esto seria la funcion findSuiteButtonByName() dividida en dos 
+  // Esto seria la funcion findSuiteButtonByName() dividida en dos
   /* findSuiteButtonByName(suiteNameTarget) {
     getSuites();
     cy.get("@suites").then((suites) => {
@@ -49,9 +46,11 @@ class SuitePage {
   clickOnDeleteButtonBySuiteName(suiteName) {
     const suiteObject = this.findSuiteButtonByName(suiteName)
     return cy.get(`button[data-testid="deleteSuiteButton${suiteObject}"]`).click()
-  } */
+  } 
+  data-testid="addCaseButton1731303760068"  
+  */
 
-  findSuiteButtonByName(suiteNameTarget) {
+  clickOnDeleteButtonBySuiteName(suiteNameTarget) {
     cy.getSuites();
     cy.get("@suites").then((suites) => {
       const targetSuite = suites.find(
@@ -60,19 +59,34 @@ class SuitePage {
 
       if (targetSuite) {
         const { suiteId } = targetSuite;
-        cy.get(`button[data-testid="deleteSuiteButton${suiteId}"]`).as(
-          "foundDeleteSuiteButton"
-        );
-        cy.get(`button[data-testid="editSuiteButton${suiteId}"]`).as(
-          "foundEditSuiteButton"
-        );
+        cy.get(`button[data-testid="deleteSuiteButton${suiteId}"]`)
+          .as("deleteSuiteButton")
+          .click();
       } else {
         throw new Error(`Suite with name "${suiteNameTarget}" not found`);
       }
     });
   }
 
-  findNestedSuiteButtonByName(suiteNameTarget) {
+  clickOnEditButtonBySuiteName(suiteNameTarget) {
+    cy.getSuites();
+    cy.get("@suites").then((suites) => {
+      const targetSuite = suites.find(
+        (suite) => suite.suiteName === suiteNameTarget
+      );
+
+      if (targetSuite) {
+        const { suiteId } = targetSuite;
+        cy.get(`button[data-testid="editSuiteButton${suiteId}"]`)
+          .as("editSuiteButton")
+          .click();
+      } else {
+        throw new Error(`Suite with name "${suiteNameTarget}" not found`);
+      }
+    });
+  }
+
+  clickOnNestedButtonBySuiteName(suiteNameTarget) {
     cy.getSuites();
     cy.get("@suites").then((suites) => {
       const targetSuite = suites.find(
@@ -80,9 +94,7 @@ class SuitePage {
       );
       if (targetSuite) {
         const { suiteId } = targetSuite;
-        cy.get(`button[data-testid="addNestedSuiteButton${suiteId}"]`).as(
-          "foundNestedSuiteButton"
-        );
+        cy.get(`button[data-testid="addNestedSuiteButton${suiteId}"]`).click();
       } else {
         throw new Error(`Suite with name "${suiteNameTarget}" not found`);
       }
@@ -95,11 +107,11 @@ class SuitePage {
     this.SuiteConfirmButton.click();
   }
 
-  deleteSuite() {
+  deleteSuite(suiteName) {
     /* Asi llamariamos a la funcion y la linea cy.get("@foundDeleteSuiteButton").click(); pasaria a estar comentada
     Ademas al usar esta forma deleteSuite() pasaria a recibir un parametro deleteSuite(suiteName)
-    this.clickOnDeleteButtonBySuiteName(suiteName) */
-    cy.get("@foundDeleteSuiteButton").click();
+     */
+    this.clickOnDeleteButtonBySuiteName(suiteName);
     this.suiteNameToConfirmDelete.then(($strong) => {
       const strongContent = $strong.text();
       this.suiteNameInput.clear().type(strongContent);
@@ -107,8 +119,8 @@ class SuitePage {
     });
   }
 
-  editSuite(nameForEdit) {
-    cy.get("@foundEditSuiteButton").click();
+  editSuite(suiteName, nameForEdit) {
+    this.clickOnEditButtonBySuiteName(suiteName);
     this.suiteEditInput.clear().type(nameForEdit);
     this.SuiteConfirmButton.click();
   }
@@ -126,9 +138,9 @@ class SuitePage {
       });
   }
 
-  addNestedSuite(name) {
-    cy.get("@foundNestedSuiteButton").click();
-    this.suiteNameInput.clear().type(name);
+  addNestedSuite(suiteName, nestedName) {
+    this.clickOnNestedButtonBySuiteName(suiteName);
+    this.suiteNameInput.clear().type(nestedName);
     this.SuiteConfirmButton.click();
   }
 }
