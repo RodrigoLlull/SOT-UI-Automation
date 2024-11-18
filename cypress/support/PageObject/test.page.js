@@ -26,32 +26,39 @@ class TestPage {
     return cy.get('[name="expectedResult"]');
   }
 
-  get addTestButton(){
-    return cy.get('[data-testid="add test case"]')
+  get addTestButton() {
+    return cy.get('[data-testid="add test case"]');
   }
 
-  clickOnAddTestButtonBySuiteName(suiteNameTarget) {
-    cy.getSuites();
-    cy.get("@suites").then((suites) => {
-      const targetSuite = suites.find(
-        (suite) => suite.suiteName === suiteNameTarget
-      );
+  foundSuitesByName(suiteNameTarget) {
+    return cy.getSuites().then(() => {
+      return cy.get("@suites").then((suites) => {
+        const targetSuite = suites.find(
+          (suite) => suite.suiteName === suiteNameTarget
+        );
 
-      if (targetSuite) {
-        const { suiteId } = targetSuite;
-        cy.get(`button[data-testid="addCaseButton${suiteId}"]`)
-          .as("AddTestButton")
-          .click();
-      } else {
-        throw new Error(`Suite with name "${suiteNameTarget}" not found`);
-      }
+        if (targetSuite) {
+          return targetSuite.suiteId;
+        } else {
+          throw new Error(`Suite with name "${suiteNameTarget}" not found`);
+        }
+      });
     });
   }
 
+  clickOnAddTestButtonBySuiteId(suiteId) {
+    cy.get(`button[data-testid="addCaseButton${suiteId}"]`)
+      .as("AddTestButton")
+      .click();
+  }
+
   addTest(suiteName, testName) {
-    this.clickOnAddTestButtonBySuiteName(suiteName);
+    this.foundSuitesByName(suiteName).then((suiteId) => {
+      cy.log(`Suite ID obtenido: ${suiteId}`);
+      this.clickOnAddTestButtonBySuiteId(suiteId);
+    });
     this.name.clear().type(testName);
-    this.addTestButton.click()
+    this.addTestButton.click();
   }
 }
 

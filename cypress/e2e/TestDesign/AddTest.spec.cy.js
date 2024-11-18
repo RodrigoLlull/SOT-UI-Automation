@@ -18,7 +18,7 @@ describe("AddSuite spec", () => {
 
       SuitePage.deleteSuite(randomSuiteName);
     });
-
+//Not be visible ' para esperar a que el modal se desaparezca.
     it("Deberia haber un caso de prueba ", () => {
       cy.wait(4000)
       cy.scrollTo('bottom');

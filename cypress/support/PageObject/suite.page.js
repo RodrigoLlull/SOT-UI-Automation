@@ -27,77 +27,42 @@ class SuitePage {
     return cy.get('[data-testid="editInput"]');
   }
 
-  // Esto seria la funcion findSuiteButtonByName() dividida en dos
-  /* findSuiteButtonByName(suiteNameTarget) {
-    getSuites();
-    cy.get("@suites").then((suites) => {
-      
-      const targetSuite = suites.find(
-        (suite) => suite.suiteName === suiteNameTarget
-      )
-      // esta es la parte que no logre solucionar
-      if (targetSuite) {
-        const { suiteId } = targetSuite
-        return suiteId
-      }});
-      
+  clickOnEditSuiteButtonBySuiteId(suiteId) {
+    cy.get(`button[data-testid="editSuiteButton${suiteId}"]`)
+      .as("editSuiteButton")
+      .click();
   }
 
-  clickOnDeleteButtonBySuiteName(suiteName) {
-    const suiteObject = this.findSuiteButtonByName(suiteName)
-    return cy.get(`button[data-testid="deleteSuiteButton${suiteObject}"]`).click()
-  } 
-  data-testid="addCaseButton1731303760068"  
-  */
-
-  clickOnDeleteButtonBySuiteName(suiteNameTarget) {
-    cy.getSuites();
-    cy.get("@suites").then((suites) => {
-      const targetSuite = suites.find(
-        (suite) => suite.suiteName === suiteNameTarget
-      );
-
-      if (targetSuite) {
-        const { suiteId } = targetSuite;
-        cy.get(`button[data-testid="deleteSuiteButton${suiteId}"]`)
-          .as("deleteSuiteButton")
-          .click();
-      } else {
-        throw new Error(`Suite with name "${suiteNameTarget}" not found`);
-      }
-    });
+  clickOnDeleteButtonBySuiteId(suiteId) {
+    cy.get(`button[data-testid="deleteSuiteButton${suiteId}"]`)
+      .as("deleteSuiteButton")
+      .click();
   }
 
-  clickOnEditButtonBySuiteName(suiteNameTarget) {
-    cy.getSuites();
-    cy.get("@suites").then((suites) => {
-      const targetSuite = suites.find(
-        (suite) => suite.suiteName === suiteNameTarget
-      );
-
-      if (targetSuite) {
-        const { suiteId } = targetSuite;
-        cy.get(`button[data-testid="editSuiteButton${suiteId}"]`)
-          .as("editSuiteButton")
-          .click();
-      } else {
-        throw new Error(`Suite with name "${suiteNameTarget}" not found`);
-      }
-    });
+  clickOnNestedButtonBySuiteId(suiteId) {
+    cy.get(`button[data-testid="addNestedSuiteButton${suiteId}"]`)
+      .as("addNestedSuiteButton")
+      .click();
   }
 
-  clickOnNestedButtonBySuiteName(suiteNameTarget) {
-    cy.getSuites();
-    cy.get("@suites").then((suites) => {
-      const targetSuite = suites.find(
-        (suite) => suite.suiteName === suiteNameTarget
-      );
-      if (targetSuite) {
-        const { suiteId } = targetSuite;
-        cy.get(`button[data-testid="addNestedSuiteButton${suiteId}"]`).click();
-      } else {
-        throw new Error(`Suite with name "${suiteNameTarget}" not found`);
-      }
+  /**
+   Este metodo sirve para obtener los id suite. Controla que existan en la peticion del back. 
+   Aclarar que los return, funcionan como un enlace entre funcion anidada, sin ellos, la funcion superior no sabe que hizo su funcion hija, 
+   y devuelve undefined.
+   */
+  foundSuitesByName(suiteNameTarget) {
+    return cy.getSuites().then(() => {
+      return cy.get("@suites").then((suites) => {
+        const targetSuite = suites.find(
+          (suite) => suite.suiteName === suiteNameTarget
+        );
+
+        if (targetSuite) {
+          return targetSuite.suiteId;
+        } else {
+          throw new Error(`Suite with name "${suiteNameTarget}" not found`);
+        }
+      });
     });
   }
 
@@ -107,11 +72,12 @@ class SuitePage {
     this.SuiteConfirmButton.click();
   }
 
+  //Tanto aqui, como en editSuite, se utiliza el nuevo metodo de found SuiteID.
   deleteSuite(suiteName) {
-    /* Asi llamariamos a la funcion y la linea cy.get("@foundDeleteSuiteButton").click(); pasaria a estar comentada
-    Ademas al usar esta forma deleteSuite() pasaria a recibir un parametro deleteSuite(suiteName)
-     */
-    this.clickOnDeleteButtonBySuiteName(suiteName);
+    this.foundSuitesByName(suiteName).then((suiteId) => {
+      cy.log(`Suite ID obtenido: ${suiteId}`);
+      this.clickOnDeleteButtonBySuiteId(suiteId);
+    });
     this.suiteNameToConfirmDelete.then(($strong) => {
       const strongContent = $strong.text();
       this.suiteNameInput.clear().type(strongContent);
@@ -120,8 +86,20 @@ class SuitePage {
   }
 
   editSuite(suiteName, nameForEdit) {
-    this.clickOnEditButtonBySuiteName(suiteName);
+    this.foundSuitesByName(suiteName).then((suiteId) => {
+      cy.log(`Suite ID obtenido: ${suiteId}`);
+      this.clickOnEditSuiteButtonBySuiteId(suiteId);
+    });
     this.suiteEditInput.clear().type(nameForEdit);
+    this.SuiteConfirmButton.click();
+  }
+
+  addNestedSuite(suiteName, nestedName) {
+    this.foundSuitesByName(suiteName).then((suiteId) => {
+      cy.log(`Suite ID obtenido: ${suiteId}`);
+      this.clickOnNestedButtonBySuiteId(suiteId);
+    });
+    this.suiteNameInput.clear().type(nestedName);
     this.SuiteConfirmButton.click();
   }
 
@@ -136,12 +114,6 @@ class SuitePage {
       .then(() => {
         cy.wrap(foundSuite).as("foundSuite");
       });
-  }
-
-  addNestedSuite(suiteName, nestedName) {
-    this.clickOnNestedButtonBySuiteName(suiteName);
-    this.suiteNameInput.clear().type(nestedName);
-    this.SuiteConfirmButton.click();
   }
 }
 
