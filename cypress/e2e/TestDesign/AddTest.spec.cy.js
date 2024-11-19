@@ -16,6 +16,7 @@ describe("AddSuite spec", () => {
   
     afterEach(() => {
       SuitePage.deleteSuite(randomSuiteName);
+      //asasasa
     });
 
     it("Crear un caso de prueba", () => {
