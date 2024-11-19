@@ -15,15 +15,11 @@ describe("AddSuite spec", () => {
     });
   
     afterEach(() => {
-
       SuitePage.deleteSuite(randomSuiteName);
     });
-//Not be visible ' para esperar a que el modal se desaparezca.
-    it("Deberia haber un caso de prueba ", () => {
-      cy.wait(4000)
-      cy.scrollTo('bottom');
-      TestPage.addTest(randomSuiteName, randomTestName);
-      cy.wait(6000)
+
+    it("Crear un caso de prueba", () => {
+      TestPage.addTestCase(randomSuiteName, randomTestName);
       cy.scrollTo('bottom');
       SuitePage.findSuite(randomSuiteName);
       cy.get('@foundSuite').should("have.text", randomSuiteName);

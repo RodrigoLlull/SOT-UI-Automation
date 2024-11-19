@@ -18,12 +18,10 @@ describe("EditSuite spec", () => {
   });
 
   it("Edit suite successfuly", () => {
-    cy.wait(3000);
     cy.scrollTo("bottom");
     SuitePage.editSuite(randomSuiteName, randomSuiteNameToEdit)
-    cy.wait(3000);//Si no hago un wait aqui, nuestro find suite, no encuentra el elemento, porque el programa demora en responder que actualizo la lista.
     cy.scrollTo("bottom");
-    SuitePage.findSuite(randomSuiteNameToEdit);
+    SuitePage.findSuiteInDOM(randomSuiteNameToEdit);
     cy.get('@foundSuite').should("have.text", randomSuiteNameToEdit);
   });
 });

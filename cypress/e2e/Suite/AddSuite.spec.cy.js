@@ -18,9 +18,8 @@ describe("AddSuite spec", () => {
 
   it("Add suite successfully", () => {
     SuitePage.addSuite(randomSuiteName);
-    cy.wait(4000)
     cy.scrollTo('bottom');
-    SuitePage.findSuite(randomSuiteName);
+    SuitePage.findSuiteInDOM(randomSuiteName);
     cy.get('@foundSuite').should("have.text", randomSuiteName);
   });
 

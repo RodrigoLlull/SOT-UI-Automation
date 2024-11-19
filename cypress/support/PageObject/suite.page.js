@@ -27,6 +27,10 @@ class SuitePage {
     return cy.get('[data-testid="editInput"]');
   }
 
+  get suiteModal() {
+    return cy.get(".content");
+  }
+
   clickOnEditSuiteButtonBySuiteId(suiteId) {
     cy.get(`button[data-testid="editSuiteButton${suiteId}"]`)
       .as("editSuiteButton")
@@ -50,7 +54,7 @@ class SuitePage {
    Aclarar que los return, funcionan como un enlace entre funcion anidada, sin ellos, la funcion superior no sabe que hizo su funcion hija, 
    y devuelve undefined.
    */
-  foundSuitesByName(suiteNameTarget) {
+  foundSuitesByNameInAPIResponse(suiteNameTarget) {
     return cy.getSuites().then(() => {
       return cy.get("@suites").then((suites) => {
         const targetSuite = suites.find(
@@ -70,12 +74,12 @@ class SuitePage {
     this.addSuiteButton.click();
     this.suiteNameInput.clear().type(name);
     this.SuiteConfirmButton.click();
+    this.suiteModal.should("not.be.exist");
   }
 
   //Tanto aqui, como en editSuite, se utiliza el nuevo metodo de found SuiteID.
   deleteSuite(suiteName) {
-    this.foundSuitesByName(suiteName).then((suiteId) => {
-      cy.log(`Suite ID obtenido: ${suiteId}`);
+    this.foundSuitesByNameInAPIResponse(suiteName).then((suiteId) => {
       this.clickOnDeleteButtonBySuiteId(suiteId);
     });
     this.suiteNameToConfirmDelete.then(($strong) => {
@@ -86,24 +90,25 @@ class SuitePage {
   }
 
   editSuite(suiteName, nameForEdit) {
-    this.foundSuitesByName(suiteName).then((suiteId) => {
-      cy.log(`Suite ID obtenido: ${suiteId}`);
+    this.foundSuitesByNameInAPIResponse(suiteName).then((suiteId) => {
       this.clickOnEditSuiteButtonBySuiteId(suiteId);
     });
     this.suiteEditInput.clear().type(nameForEdit);
     this.SuiteConfirmButton.click();
+    this.suiteModal.should("not.be.exist");
   }
 
   addNestedSuite(suiteName, nestedName) {
-    this.foundSuitesByName(suiteName).then((suiteId) => {
-      cy.log(`Suite ID obtenido: ${suiteId}`);
+    this.foundSuitesByNameInAPIResponse(suiteName).then((suiteId) => {
       this.clickOnNestedButtonBySuiteId(suiteId);
     });
     this.suiteNameInput.clear().type(nestedName);
-    this.SuiteConfirmButton.click();
+    this.SuiteConfirmButton.click()
+    this.suiteModal.should("not.be.exist");
+    
   }
 
-  findSuite(name) {
+  findSuiteInDOM(name) {
     let foundSuite = "";
     this.suitesArr
       .each((elem) => {
