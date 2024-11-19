@@ -55,8 +55,6 @@ Cypress.Commands.add("loginByApi", (sessionID) => {
 });
 
 Cypress.Commands.add("getSuites", () => {
-  //const suiteUrl = `https://b02a6jye04.execute-api.us-east-1.amazonaws.com/dev/projects/PROJECT1726858529602/suites`;
-  //const suiteUrl = `https://b02a6jye04.execute-api.us-east-1.amazonaws.com/dev/projects/PROJECT1726858662783/suites`;
 
   cy.getProjects().then(()=>{
       const suiteUrl = `https://b02a6jye04.execute-api.us-east-1.amazonaws.com/dev/projects/${Cypress.env("projectId")}/suites`
@@ -88,3 +86,37 @@ Cypress.Commands.add("getProjects", () => {
     Cypress.env("projectId", projectId);
   });
 });
+
+
+Cypress.Commands.add('createMockSuite', () => {
+  const endpoint = 'https://b02a6jye04.execute-api.us-east-1.amazonaws.com/dev/projects/PROJECT1726858529602/suites'
+
+  cy.fixture('suiteCreated').then((mockSuite) => {
+    cy.intercept('POST', endpoint, {
+      statusCode: 201,
+      body: mockSuite
+    }).as('postMockedSuite')
+  })
+})
+
+Cypress.Commands.add('getMockSuite', () => {
+  const getEndpoint = 'https://b02a6jye04.execute-api.us-east-1.amazonaws.com/dev/projects/PROJECT1726858529602/suites?name='
+  cy.fixture("suitesList").then((mockResponse) => {
+    
+    mockResponse.suitesInProject.push({
+      suiteId: "789",
+      projectId: "PROJECT1726858529602",
+      suiteName: "New Suite Mock",
+      suiteTotalCases: 0,
+      suiteTotalSuites: 0,
+      casesInSuite: [],
+      suitesInSuite: [],
+      casesInRun: []
+    });
+    mockResponse.totalSuitesInProject += 1;
+    cy.intercept("GET", getEndpoint, {
+      statusCode: 200,
+      body: mockResponse,
+    }).as("getMockedSuites");
+  })
+})

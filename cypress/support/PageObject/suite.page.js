@@ -31,6 +31,10 @@ class SuitePage {
     return cy.get(".content");
   }
 
+  get suiteModal() {
+    return cy.get(".content");
+  }
+
   clickOnEditSuiteButtonBySuiteId(suiteId) {
     cy.get(`button[data-testid="editSuiteButton${suiteId}"]`)
       .as("editSuiteButton")
@@ -49,18 +53,12 @@ class SuitePage {
       .click();
   }
 
-  /**
-   Este metodo sirve para obtener los id suite. Controla que existan en la peticion del back. 
-   Aclarar que los return, funcionan como un enlace entre funcion anidada, sin ellos, la funcion superior no sabe que hizo su funcion hija, 
-   y devuelve undefined.
-   */
   foundSuitesByNameInAPIResponse(suiteNameTarget) {
     return cy.getSuites().then(() => {
       return cy.get("@suites").then((suites) => {
         const targetSuite = suites.find(
           (suite) => suite.suiteName === suiteNameTarget
         );
-
         if (targetSuite) {
           return targetSuite.suiteId;
         } else {
@@ -71,8 +69,17 @@ class SuitePage {
   }
 
   addSuite(name) {
+    cy.createMockSuite();
     this.addSuiteButton.click();
     this.suiteNameInput.clear().type(name);
+    this.SuiteConfirmButton.click();
+    this.suiteModal.should("not.be.exist");
+  }
+
+  addMockSuite() {
+    cy.createMockSuite();
+    this.addSuiteButton.click();
+    this.suiteNameInput.clear().type("New Suite Mock");
     this.SuiteConfirmButton.click();
     this.suiteModal.should("not.be.exist");
   }
@@ -103,9 +110,8 @@ class SuitePage {
       this.clickOnNestedButtonBySuiteId(suiteId);
     });
     this.suiteNameInput.clear().type(nestedName);
-    this.SuiteConfirmButton.click()
+    this.SuiteConfirmButton.click();
     this.suiteModal.should("not.be.exist");
-    
   }
 
   findSuiteInDOM(name) {

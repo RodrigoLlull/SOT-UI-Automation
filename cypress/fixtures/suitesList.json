@@ -1,0 +1,16 @@
+{
+    "totalSuitesInProject": 1,
+    "totalCasesInProject": 0,
+    "suitesInProject": [
+        {
+            "suiteId": "1731960719113",
+            "projectId": "PROJECT1726858529602",
+            "suiteName": "123",
+            "suiteTotalCases": 0,
+            "suiteTotalSuites": 0,
+            "casesInSuite": [],
+            "suitesInSuite": [],
+            "casesInRun": []
+        }
+    ]
+}
