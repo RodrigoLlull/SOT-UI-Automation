@@ -12,16 +12,32 @@ describe("AddSuite spec", () => {
   });
 
 
-  afterEach(() => {
-    SuitePage.deleteSuite(randomSuiteName);
+  afterEach(function () {
+    if (this.currentTest.title !== "Add mock suite successfully") {
+      return SuitePage.deleteSuite(randomSuiteName);
+    }
   });
 
   it("Add suite successfully", () => {
     SuitePage.addSuite(randomSuiteName);
-    cy.wait(4000)
     cy.scrollTo('bottom');
     SuitePage.findSuite(randomSuiteName);
     cy.get('@foundSuite').should("have.text", randomSuiteName);
   });
 
+
+  it("Add mock suite successfully", () => {
+    cy.getMockSuite();
+    SuitePage.addMockSuite();
+    
+    cy.wait("@postMockedSuite").then(({ response }) => {
+      expect(response.body.suiteName).to.equal("New Suite Mock");
+    });
+    cy.wait("@getMockedSuites")
+    SuitePage.findSuite('New Suite Mock');
+    cy.get('@foundSuite').should("have.text", "New Suite Mock");
+  });
+
 });
+
+

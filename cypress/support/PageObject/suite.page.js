@@ -27,6 +27,10 @@ class SuitePage {
     return cy.get('[data-testid="editInput"]');
   }
 
+  get suiteModal() {
+    return cy.get('.content')
+  }
+
   clickOnEditSuiteButtonBySuiteId(suiteId) {
     cy.get(`button[data-testid="editSuiteButton${suiteId}"]`)
       .as("editSuiteButton")
@@ -67,9 +71,21 @@ class SuitePage {
   }
 
   addSuite(name) {
+    cy.createMockSuite()
     this.addSuiteButton.click();
     this.suiteNameInput.clear().type(name);
-    this.SuiteConfirmButton.click();
+    this.SuiteConfirmButton.click().then(() => {
+      this.suiteModal.should('not.be.exist')
+    })
+  }
+
+  addMockSuite() {
+    cy.createMockSuite()
+    this.addSuiteButton.click();
+    this.suiteNameInput.clear().type("New Suite Mock");
+    this.SuiteConfirmButton.click().then(() => {
+      this.suiteModal.should('not.be.exist')
+    });
   }
 
   //Tanto aqui, como en editSuite, se utiliza el nuevo metodo de found SuiteID.
@@ -91,7 +107,9 @@ class SuitePage {
       this.clickOnEditSuiteButtonBySuiteId(suiteId);
     });
     this.suiteEditInput.clear().type(nameForEdit);
-    this.SuiteConfirmButton.click();
+    this.SuiteConfirmButton.click().then(() => {
+      this.suiteModal.should('not.be.exist')
+    });
   }
 
   addNestedSuite(suiteName, nestedName) {
@@ -100,7 +118,9 @@ class SuitePage {
       this.clickOnNestedButtonBySuiteId(suiteId);
     });
     this.suiteNameInput.clear().type(nestedName);
-    this.SuiteConfirmButton.click();
+    this.SuiteConfirmButton.click().then(() => {
+      this.suiteModal.should('not.be.exist')
+    });
   }
 
   findSuite(name) {

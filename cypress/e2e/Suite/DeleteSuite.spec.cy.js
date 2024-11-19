@@ -13,7 +13,6 @@ describe("Delete spec", () => {
   });
 
   it("Delete suit successfully ", () =>{
-    cy.wait(4000)
     cy.scrollTo('bottom');
     SuitePage.deleteSuite(randomSuiteName)
     cy.get('@deleteSuiteButton').should('not.exist');

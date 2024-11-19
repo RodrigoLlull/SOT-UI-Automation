@@ -18,10 +18,8 @@ describe("AddSuite spec", () => {
   });
 
   it("Add nested suite successfully", () => {
-    cy.wait(4000)
     cy.scrollTo('bottom');
     SuitePage.addNestedSuite(randomSuiteName, randomNestedSuiteName);
-    cy.wait(4000)
     cy.scrollTo('bottom');
     SuitePage.findSuite(randomNestedSuiteName);
     cy.get('@foundSuite').should("have.text", randomNestedSuiteName);
