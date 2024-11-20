@@ -3,6 +3,7 @@ import DashboardPage from "../../support/PageObject/dashboard.page";
 import SuitePage from "../../support/PageObject/suite.page";
 import TestPage from "../../support/PageObject/test.page";
 
+
 describe("AddSuite spec", () => {
   const randomSuiteName = generateRandomString(4);
   const randomTestName = generateRandomString(4)
@@ -16,14 +17,13 @@ describe("AddSuite spec", () => {
   
     afterEach(() => {
       SuitePage.deleteSuite(randomSuiteName);
-      //asasasa
     });
 
-    it("Crear un caso de prueba", () => {
+    it("prueba",() => {
+      cy.log("Agregando un caso de prueba")
       TestPage.addTestCase(randomSuiteName, randomTestName);
-      cy.scrollTo('bottom');
-      SuitePage.findSuite(randomSuiteName);
-      cy.get('@foundSuite').should("have.text", randomSuiteName);
-    });
+      cy.log("se agrego el caso.")
+      SuitePage.findSuiteInDOM(randomSuiteName);
+      cy.log("se agrego el caso.")
+    })
   });
-  

@@ -30,13 +30,22 @@ class TestPage {
     return cy.get('[data-testid="add test case"]');
   }
 
+  get suiteModal() {
+    return cy.get(".content");
+  }
+
+  clickOnAddCaseButtonBySuiteId(suiteId) {
+    cy.get(`button[data-testid="addCaseButton${suiteId}"]`)
+      .as("AddTestButton")
+      .click();
+  }
+
   foundSuitesByNameInAPIResponse(suiteNameTarget) {
     return cy.getSuites().then(() => {
       return cy.get("@suites").then((suites) => {
         const targetSuite = suites.find(
           (suite) => suite.suiteName === suiteNameTarget
         );
-
         if (targetSuite) {
           return targetSuite.suiteId;
         } else {
@@ -44,12 +53,6 @@ class TestPage {
         }
       });
     });
-  }
-
-  clickOnAddCaseButtonBySuiteId(suiteId) {
-    cy.get(`button[data-testid="addCaseButton${suiteId}"]`)
-      .as("AddTestButton")
-      .click();
   }
 
   addTestCase(suiteName, testName) {

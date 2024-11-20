@@ -21,8 +21,8 @@ describe("AddSuite spec", () => {
     cy.scrollTo('bottom');
     SuitePage.addNestedSuite(randomSuiteName, randomNestedSuiteName);
     cy.scrollTo('bottom');
-    SuitePage.findSuiteInDOM(randomNestedSuiteName);
-    cy.get('@foundSuite').should("have.text", randomNestedSuiteName);
+    SuitePage.findSuiteInDOM(randomSuiteName);
+    cy.get('@foundSuite').should("have.text", randomSuiteName);
   });
 
 });

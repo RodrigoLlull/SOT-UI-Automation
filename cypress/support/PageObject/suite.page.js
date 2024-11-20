@@ -69,7 +69,6 @@ class SuitePage {
   }
 
   addSuite(name) {
-    cy.createMockSuite();
     this.addSuiteButton.click();
     this.suiteNameInput.clear().type(name);
     this.SuiteConfirmButton.click();
@@ -108,6 +107,7 @@ class SuitePage {
   addNestedSuite(suiteName, nestedName) {
     this.foundSuitesByNameInAPIResponse(suiteName).then((suiteId) => {
       this.clickOnNestedButtonBySuiteId(suiteId);
+      cy.log("estamos dentro de nested suite")
     });
     this.suiteNameInput.clear().type(nestedName);
     this.SuiteConfirmButton.click();
