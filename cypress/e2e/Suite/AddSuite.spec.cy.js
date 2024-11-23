@@ -26,14 +26,14 @@ describe("AddSuite spec", () => {
   });
 
 
-  it("Add mock suite successfully", () => {
+  it.only("Add mock suite successfully", () => {
     cy.getMockSuite();
     SuitePage.addMockSuite();
     cy.wait("@postMockedSuite").then(({ response }) => {
       expect(response.body.suiteName).to.equal("New Suite Mock");
     });
     cy.wait("@getMockedSuites")
-    SuitePage.findSuite('New Suite Mock');
+    SuitePage.findSuiteInDOM('New Suite Mock');
     cy.get('@foundSuite').should("have.text", "New Suite Mock");
   });
 
