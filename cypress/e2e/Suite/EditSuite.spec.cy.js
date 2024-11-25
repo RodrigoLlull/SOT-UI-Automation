@@ -14,14 +14,14 @@ describe("EditSuite spec", () => {
   });
 
   afterEach(() => {
-    SuitePage.deleteSuite(randomSuiteNameToEdit);
+    cy.deleteSuite(randomSuiteNameToEdit)
   });
 
   it("Edit suite successfuly", () => {
     cy.scrollTo("bottom");
     SuitePage.editSuite(randomSuiteName, randomSuiteNameToEdit)
     cy.scrollTo("bottom");
-    SuitePage.findSuiteInDOM(randomSuiteNameToEdit);
+    SuitePage.findSuiteInDOM(randomSuiteNameToEdit)
     cy.get('@foundSuite').should("have.text", randomSuiteNameToEdit);
   });
 });
