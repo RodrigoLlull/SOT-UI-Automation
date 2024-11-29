@@ -7,8 +7,9 @@ on:
     branches: [master]
 
 
-baseUrl: ${{ secrets.BASEURL }}
+
 env:
+  baseUrl: ${{ secrets.BASEURL }}
   email: ${{ secrets.EMAIL }}
   password: ${{ secrets.PASSWORD }}
 
