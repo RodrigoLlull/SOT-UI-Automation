@@ -7,12 +7,14 @@ describe("AddSuite spec", () => {
 
   beforeEach(() => {
     cy.loginByApi(randomSuiteName);
-    if (this.currentTest.title.includes("@smoke")) {
-      cy.visit("/dashboard");
-      DashboardPage.AccessToDesignPage();
-    } else {
-      cy.visit("/test-design?id=PROJECT1726858662783&name=GROUP+06");
-    }
+    cy.visit("/dashboard");
+    DashboardPage.AccessToDesignPage();
+    // if (this.currentTest.title.includes("@smoke")) {
+    //   cy.visit("/dashboard");
+    //   DashboardPage.AccessToDesignPage();
+    // } else {
+    //   cy.visit("/test-design?id=PROJECT1726858662783&name=GROUP+06");
+    // }
   });
 
   afterEach(function () {
