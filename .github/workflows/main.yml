@@ -23,4 +23,4 @@ jobs:
         with:
           node-version: "18.x"
       - run: npm install
-      - run: npx cypress run
+      - run: npx cypress run --env grep="smoke"

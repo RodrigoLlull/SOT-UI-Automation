@@ -8,6 +8,6 @@ describe.skip("AddSuite spec", () => {
       dashboardPage.AccessToRunPage();
     });
   
-    it("Deberia haber un caso de prueba ", () => {});
+    it("@regression - Deberia haber un caso de prueba ", () => {});
   });
   

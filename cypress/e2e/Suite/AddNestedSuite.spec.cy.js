@@ -17,7 +17,7 @@ describe("AddSuite spec", () => {
     SuitePage.deleteSuite(randomSuiteName)
   });
 
-  it("Add nested suite successfully", () => {
+  it("@smoke - Add nested suite successfully", () => {
     cy.scrollTo('bottom');
     SuitePage.addNestedSuite(randomSuiteName, randomNestedSuiteName);
     cy.scrollTo('bottom');

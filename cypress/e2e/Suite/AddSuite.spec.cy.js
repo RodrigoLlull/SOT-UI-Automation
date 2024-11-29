@@ -6,38 +6,40 @@ describe("AddSuite spec", () => {
   const randomSuiteName = generateRandomString(4);
 
   beforeEach(() => {
-    cy.loginByApi(randomSuiteName)
-    cy.visit("/dashboard")
-    DashboardPage.AccessToDesignPage();
-  });
-
-
-  afterEach(function () {
-    if (this.currentTest.title !== "Add mock suite successfully") {
-      cy.deleteSuite(randomSuiteName)
+    cy.loginByApi(randomSuiteName);
+    if (this.currentTest.title.includes("@smoke")) {
+      cy.visit("/dashboard");
+      DashboardPage.AccessToDesignPage();
+    } else {
+      cy.visit("/test-design?id=PROJECT1726858662783&name=GROUP+06");
     }
   });
 
-  it("Add suite successfully", () => {
-    SuitePage.addSuite(randomSuiteName);
-    cy.scrollTo('bottom');
-    SuitePage.findSuiteInDOM(randomSuiteName);
-    cy.get('@foundSuite').should("have.text", randomSuiteName);
+  afterEach(function () {
+    // if (this.currentTest.title !== "Add mock suite successfully") {
+    //   cy.deleteSuite(randomSuiteName)
+    // }
+    if (this.currentTest.title.includes("@smoke")) {
+      cy.deleteSuite(randomSuiteName);
+    }
   });
 
+  it("@smoke - Add suite successfully", () => {
+    SuitePage.addSuite(randomSuiteName);
+    cy.scrollTo("bottom");
+    SuitePage.findSuiteInDOM(randomSuiteName);
+    cy.get("@foundSuite").should("have.text", randomSuiteName);
+  });
 
-  it("Add mock suite successfully", () => {
+  it("@regression - Add mock suite successfully", () => {
     cy.getMockSuite();
     SuitePage.addMockSuite();
     cy.wait("@postMockedSuite").then(({ response }) => {
       expect(response.body.suiteName).to.equal("New Suite Mock");
     });
     cy.wait("@getMockedSuites").then(() => {
-      SuitePage.findSuiteInDOM('New Suite Mock');
-      cy.get('@foundSuite').should("have.text", "New Suite Mock");
-    })
+      SuitePage.findSuiteInDOM("New Suite Mock");
+      cy.get("@foundSuite").should("have.text", "New Suite Mock");
+    });
   });
-
 });
-
-

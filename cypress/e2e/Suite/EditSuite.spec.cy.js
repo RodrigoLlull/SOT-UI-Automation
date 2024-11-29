@@ -17,7 +17,7 @@ describe("EditSuite spec", () => {
     cy.deleteSuite(randomSuiteNameToEdit)
   });
 
-  it("Edit suite successfuly", () => {
+  it("@smoke - Edit suite successfuly", () => {
     cy.scrollTo("bottom");
     SuitePage.editSuite(randomSuiteName, randomSuiteNameToEdit)
     cy.scrollTo("bottom");

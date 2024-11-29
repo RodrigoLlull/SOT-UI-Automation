@@ -19,7 +19,7 @@ describe("AddSuite spec", () => {
       SuitePage.deleteSuite(randomSuiteName);
     });
 
-    it("prueba",() => {
+    it("@regression - prueba",() => {
       cy.log("Agregando un caso de prueba")
       TestPage.addTestCase(randomSuiteName, randomTestName);
       cy.log("se agrego el caso.")
