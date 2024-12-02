@@ -10,7 +10,7 @@ describe("AddSuite spec", () => {
     cy.loginByApi(randomSuiteName)
     cy.visit("/dashboard")
     DashboardPage.AccessToDesignPage();
-    SuitePage.addSuite(randomSuiteName);
+    cy.createSuite(randomSuiteName)
   });
 
   afterEach(()=> {

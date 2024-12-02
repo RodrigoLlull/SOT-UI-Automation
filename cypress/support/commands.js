@@ -103,6 +103,8 @@ Cypress.Commands.add('deleteSuite', (suiteNameTarget) => {
               authorization: Cypress.env("Authorization")
             },
             body:deleteSuiteData,
+          }).then(() => {
+            cy.reload()
           })
         })
         
@@ -116,7 +118,7 @@ Cypress.Commands.add('createMockSuite', () => {
   cy.getProjects().then(() => {
     const endpoint = `https://b02a6jye04.execute-api.us-east-1.amazonaws.com/dev/projects/${Cypress.env("projectId")}/suites`
 
-    cy.fixture('suiteCreated').then((mockSuite) => {
+    cy.fixture('suiteMockCreated').then((mockSuite) => {
       cy.intercept('POST', endpoint, {
         statusCode: 201,
         body: mockSuite

@@ -18,10 +18,7 @@ describe("AddSuite spec", () => {
   });
 
   afterEach(function () {
-    // if (this.currentTest.title !== "Add mock suite successfully") {
-    //   cy.deleteSuite(randomSuiteName)
-    // }
-    if (this.currentTest.title.includes("@smoke")) {
+    if (!this.currentTest.title.includes("mock")) {
       cy.deleteSuite(randomSuiteName);
     }
   });
@@ -33,7 +30,7 @@ describe("AddSuite spec", () => {
     cy.get("@foundSuite").should("have.text", randomSuiteName);
   });
 
-  it("@regression - Add mock suite successfully", () => {
+  it("@smoke - Add mock suite successfully", () => {
     cy.getMockSuite();
     SuitePage.addMockSuite();
     cy.wait("@postMockedSuite").then(({ response }) => {
