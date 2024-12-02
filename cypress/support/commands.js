@@ -42,6 +42,28 @@ Cypress.Commands.add("getProjects", () => {
   });
 });
 
+Cypress.Commands.add('createSuite', (suiteName) => {
+  let createdSuiteData = require('../data/suiteCreated.json')
+  cy.getProjects().then(() => {
+    const createSuiteEndpoint = `https://b02a6jye04.execute-api.us-east-1.amazonaws.com/dev/projects/${Cypress.env("projectId")}/suites`
+
+    createdSuiteData.suiteName = suiteName
+    createdSuiteData.projectId = process.env.projectId
+    
+    cy.request({
+      method: "POST",
+      url: createSuiteEndpoint,
+      headers: {
+        authorization: Cypress.env("Authorization")
+      },
+      body:createdSuiteData,
+    }).then(() => {
+      cy.reload()
+    })
+  
+  })
+})
+
 Cypress.Commands.add("getSuites", () => {
   cy.getProjects().then(() => {
       const suiteUrl = `https://b02a6jye04.execute-api.us-east-1.amazonaws.com/dev/projects/${Cypress.env("projectId")}/suites`
